@@ -1,6 +1,6 @@
 {
   "name": "@r/redux-state-archiver",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A collection of React components for serializing your redux state",
   "main": "bin/redux-state-archiver.js",
   "scripts": {
