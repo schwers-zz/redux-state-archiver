@@ -75,7 +75,7 @@ The arguments to makeStateArchiver are simliar to createSelector, pass in an arr
 of selectors that extract the data you from state you wish to serialize.
 
 ```javascript
-const themeSelector = (state) => return state.theme;
+const themeSelector = (state) => state.theme;
 ```
 
 After your selectors, pass in a 'combiner' to merge the data from your selectors
