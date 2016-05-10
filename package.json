@@ -2,9 +2,10 @@
   "name": "@r/redux-state-archiver",
   "version": "0.0.1",
   "description": "A collection of React components for serializing your redux state",
-  "main": "index.js",
+  "main": "bin/redux-state-archiver.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "blueprints -w",
+    "build": "blueprints"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,25 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/schwers/redux-state-archiver/issues"
+  },
+  "dependencies": {
+    "@r/build": "0.3.6"
+  },
+  "devDependencies": {
+    "js-cookie": "2.1.1",
+    "react": "15.0.1",
+    "react-dom": "15.0.1",
+    "react-redux": "4.4.5",
+    "redux": "3.5.2",
+    "reselect": "2.5.1"
+  },
+  "peerDependencies": {
+    "js-cookie": "2.1.1",
+    "react": "15.0.1",
+    "react-dom": "15.0.1",
+    "react-redux": "4.4.5",
+    "redux": "3.5.2",
+    "reselect": "2.5.1"
   },
   "homepage": "https://github.com/schwers/redux-state-archiver#readme"
 }
