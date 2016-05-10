@@ -7,14 +7,14 @@ when it changes.
 The arguments to makeStateArchiver are simliar to createSelector, pass in an array
 of selectors that extract the data you from state you wish to serialize.
 
-e.g. ```javascript
+```javascript
 const themeSelector = (state) => return state.theme;
 ```
 
 After your selectors, pass in a 'combiner' to merge the data from your selectors
 into an object that will represent the overall state of data you wish to serialize;
 
-e.g. ```javascript
+```javascript
 const combiner = (theme) => ({ theme });
 ```
 
@@ -23,7 +23,8 @@ in some manner. You probably will never pass this, as most apps can use the help
 `makeCookieArchiver` or `makeLocalStorageArchiver`; Note: Your archiver should be able
 to deal with persisting the diff of what's output from your combiner.
 
-Full example: ```javascript
+Full example:
+```javascript
 import React from 'react';
 import { Provider } from 'react-redux';
 import { makeCookieArchiver } from '@r/redux-state-archiver';
@@ -43,7 +44,7 @@ const renderApp = (store) => (
   <Provider store={ store }>
     <App />
     <UrlSync />
-    <CookieSynce />
+    <CookieSync />
   </Provider>
 );
 
