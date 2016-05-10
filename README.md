@@ -34,8 +34,8 @@ import { makeCookieArchiver } from '@r/redux-state-archiver';
 import { UrlSync } from '@r/platform/components';
 import App from './src/App';
 
-const themeSelector = (state) => return state.theme;
-const compactSelector = (state) => return state.compact;
+const themeSelector = (state) => state.theme;
+const compactSelector = (state) => state.compact;
 const combiner = (theme, compact) => ({ theme, compact });
 const CookieSync = makeCookieArchiver(
   themeSelector,
