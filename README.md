@@ -20,8 +20,11 @@ const combiner = (theme) => ({ theme });
 
 Finally pass in a state archiver, a function that takes an object, and persists it
 in some manner. You probably will never pass this, as most apps can use the helper functions
-`makeCookieArchiver` or `makeLocalStorageArchiver`; Note: Your archiver should be able
-to deal with persisting the diff of what's output from your combiner.
+`makeCookieArchiver` or `makeLocalStorageArchiver`. These functions try to match the signature
+of `connect` from 'react-redux', so you pass your selectors as arguments without wrapping them
+in an array.
+
+Note: Your archiver should be able to deal with persisting the diff of what's output from your combiner.
 
 Full example:
 ```javascript

@@ -17,9 +17,22 @@ export class StateArchiver extends React.Component {
     super(props);
 
     this.canArchive = props.tester ? props.tester() : true;
+    this.mounted = false;
   }
 
-  componentWillUpdate(nextProps) {
+  componentDidMount() {
+    this.mounted = true;
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if (this.mounted) {
+      this.updateArchiveFromProps(nextProps);
+    }
+
+    return false;
+  }
+
+  updateArchiveFromProps(nextProps) {
     if (this.canArchive) {
       const archiveDiff = this.buildDiffFromNextProps(nextProps);
       if (archiveDiff) {
@@ -74,8 +87,11 @@ const combiner = (theme) => ({ theme });
 
 Finally pass in a state archiver, a function that takes an object, and persists it
 in some manner. You probably will never pass this, as most apps can use the helper functions
-`makeCookieArchiver` or `makeLocalStorageArchiver`; Note: Your archiver should be able
-to deal with persisting the diff of what's output from your combiner.
+`makeCookieArchiver` or `makeLocalStorageArchiver`. These functions try to match the signature
+of `connect` from 'react-redux', so you pass your selectors as arguments without wrapping them
+in an array.
+
+Note: Your archiver should be able to deal with persisting the diff of what's output from your combiner.
 
 Full example:
 ```javascript
@@ -103,23 +119,13 @@ const renderApp = (store) => (
 );
 
 ```
-
 */
-export const makeStateArchiver = (...funcs) => {
-  let tester = funcs.pop();
-  let archiver = funcs.pop();
-  let combiner = funcs.pop();
-
-  if (!combiner) {  // we don't have a tester, shuffle things around
-    combiner = archiver;
-    archiver = tester;
-  }
-
+export const makeStateArchiver = (selectors=[], combiner, archiver, tester) => {
   const selectorCombiner = (...args) => {
     return { datum: combiner(...args), archiver, tester };
   };
 
-  const selector = createSelector(funcs, selectorCombiner);
+  const selector = createSelector(selectors, selectorCombiner);
   return connect(selector)(StateArchiver);
 }
 
@@ -145,8 +151,8 @@ const cookieArchive = (datum) => {
 }
 
 export const makeCookieArchiver = (...funcs) => {
-  funcs.push(cookieArchive);
-  return makeStateArchiver(...funcs);
+  const combiner = funcs.pop();
+  return makeStateArchiver(funcs, combiner, cookieArchive);
 }
 
 const persistLocalStorageKeyValue = (key, value) => localStorage.setItem(key, value);
@@ -156,7 +162,6 @@ const localStorageArchive = (datum) => {
 };
 
 export const makeLocalStorageArchiver = (...funcs) => {
-  funcs.push(localStorageArchive);
-  funcs.push(localStorageAvailable);
-  return makeStateArchiver(...funcs);
+  const combiner = funcs.pop();
+  return makeStateArchiver(funcs, combiner, localStorageArchive, localStorageAvailable);
 };
