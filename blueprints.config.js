@@ -28,6 +28,7 @@ module.exports = [{
       'react-redux': 'commonjs react-redux',
       redux: 'commonjs redux',
       reselect: 'commonjs reselect',
+      lodash: 'lodash',
     },
-  }
-}]
+  },
+}];

@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import { isPlainObject } from 'lodash/lang';
+
 import cookies from 'js-cookie';
 import localStorageAvailable from './localStorageAvailable';
 
@@ -52,7 +54,7 @@ export class StateArchiver extends React.Component {
       const value = datum[key];
 
       // simple equaility comparison, matches the immutability constraints from redux / reselect
-      if (value != this.props.datum[key]) {
+      if (value !== this.props.datum[key]) {
         diff[key] = value;
         haveDiff = true;
       }
@@ -127,7 +129,7 @@ export const makeStateArchiver = (selectors=[], combiner, archiver, tester) => {
 
   const selector = createSelector(selectors, selectorCombiner);
   return connect(selector)(StateArchiver);
-}
+};
 
 const applyArchiver = (datum, archiver) => {
   const keys = Object.keys(datum);
@@ -148,14 +150,19 @@ const persistCookieKeyValue = (key, value) => {
 
 const cookieArchive = (datum) => {
   applyArchiver(datum, persistCookieKeyValue);
-}
+};
 
 export const makeCookieArchiver = (...funcs) => {
   const combiner = funcs.pop();
   return makeStateArchiver(funcs, combiner, cookieArchive);
-}
+};
 
-const persistLocalStorageKeyValue = (key, value) => localStorage.setItem(key, value);
+const persistLocalStorageKeyValue = (key, value) => {
+  let val = value;
+  if (isPlainObject(value)) { val = JSON.stringify(value); }
+
+  localStorage.setItem(key, val);
+};
 
 const localStorageArchive = (datum) => {
   applyArchiver(datum, persistLocalStorageKeyValue);
@@ -165,3 +172,5 @@ export const makeLocalStorageArchiver = (...funcs) => {
   const combiner = funcs.pop();
   return makeStateArchiver(funcs, combiner, localStorageArchive, localStorageAvailable);
 };
+
+export const isLocalStorageAvailable = localStorageAvailable;
