@@ -2,10 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { isPlainObject } from 'lodash/lang';
+import isPlainObject from 'lodash/isPlainObject';
 
 import cookies from 'js-cookie';
 import localStorageAvailable from './localStorageAvailable';
+
+// Webpack 2 has an export bug where a library's export object does not state
+// that it is an es6 module. Without this tag defined on the exports object,
+// Webpack does not import the library correctly.
+export const __esModule = true;
 
 const T = React.PropTypes;
 export class StateArchiver extends React.Component {
