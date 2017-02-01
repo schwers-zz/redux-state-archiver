@@ -26,7 +26,7 @@
     "url": "https://github.com/schwers/redux-state-archiver/issues"
   },
   "dependencies": {
-    "@r/build": "0.10.0",
+    "@r/build": "0.10.1",
     "lodash": "^4.12.0"
   },
   "devDependencies": {

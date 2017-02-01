@@ -157,9 +157,23 @@ const cookieArchive = (datum) => {
   applyArchiver(datum, persistCookieKeyValue);
 };
 
-export const makeCookieArchiver = (...funcs) => {
+export const makeSessionCookieArchiver = (...funcs) => {
   const combiner = funcs.pop();
   return makeStateArchiver(funcs, combiner, cookieArchive);
+};
+
+export const makeCookieArchiver = (cookieOptions={ domain, expires }) => (...funcs) => {
+  const combiner = funcs.pop();
+  return makeStateArchiver(funs, combiner, (key, value) => {
+    if (typeof value === 'undefined') {
+      cookies.remove(key);
+    } else {
+      cookies.set(key, value, {
+        domain,
+        expires,
+      });
+    }
+  });
 };
 
 const persistLocalStorageKeyValue = (key, value) => {
